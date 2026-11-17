@@ -1,0 +1,32 @@
+name: fetch-image
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'queue/**'
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download queued images
+        run: |
+          mkdir -p generated
+          for f in queue/*.txt; do
+            [ -e "$f" ] || continue
+            name=$(basename "$f" .txt)
+            [ -f "generated/$name" ] && continue
+            case "$name" in *[!A-Za-z0-9._-]*|"") echo "bad name: $name"; continue;; esac
+            url=$(head -n1 "$f" | tr -d '\r\n ')
+            host=$(echo "$url" | sed -nE 's#^https://([^/]+)/.*#\1#p')
+            echo "$host" | grep -Eq '^[a-z0-9.-]+\.hf\.space$' || { echo "blocked host for $name"; continue; }
+            curl -fL --proto '=https' --proto-redir '=https' --retry 3 --max-time 120 -o "generated/$name" "$url" || echo "download failed: $name"
+          done
+      - name: Commit
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add generated
+          git diff --cached --quiet || { git commit -m "Add generated images"; git push; }
