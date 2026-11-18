@@ -1,0 +1,16 @@
+{
+  "probe": [
+    "linoyts/Qwen-Image-Edit-2511-Fast",
+    "lenML/Qwen-Image-Edit-2511-Fast",
+    "akhaliq/Qwen-Image-Edit-2511-LoRAs-Fast",
+    "ghjjhv/Qwen-Image-Edit-2511-LoRAs-Fast",
+    "prithivMLmods/Qwen-Image-Edit-2511-LoRAs-Fast",
+    "a333ffff/Qwen-Image-Edit-2511-Custom",
+    "ovi054/Qwen-Image-Edit-2511-LoRA",
+    "linoyts/Qwen-Image-Edit-2511-AnyPose",
+    "Qwen/Qwen-Image-Edit-2511",
+    "multimodalart/Qwen-Image-Edit-Fast",
+    "black-forest-labs/FLUX.2-dev",
+    "multimodalart/FLUX.2-dev-turbo"
+  ]
+}
