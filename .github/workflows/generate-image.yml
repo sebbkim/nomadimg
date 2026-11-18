@@ -1,0 +1,33 @@
+name: generate-image
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'requests/*.json'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: generate-image
+  cancel-in-progress: false
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install
+        run: pip install gradio_client pillow
+      - name: Generate
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: python scripts/generate.py
+      - name: Commit
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add generated
+          git diff --cached --quiet || { git commit -m "Add generated results"; git pull --rebase; git push; }
