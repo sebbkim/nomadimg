@@ -1,0 +1,20 @@
+{
+  "authenticated": true,
+  "status": "ok",
+  "probe": {
+    "linoyts/Qwen-Image-Edit-2511-Fast": "RUNNING zero-a10g",
+    "lenML/Qwen-Image-Edit-2511-Fast": "PAUSED",
+    "akhaliq/Qwen-Image-Edit-2511-LoRAs-Fast": "RUNNING zero-a10g",
+    "ghjjhv/Qwen-Image-Edit-2511-LoRAs-Fast": "PAUSED",
+    "prithivMLmods/Qwen-Image-Edit-2511-LoRAs-Fast": "RUNNING zero-a10g",
+    "a333ffff/Qwen-Image-Edit-2511-Custom": "RUNNING zero-a10g",
+    "ovi054/Qwen-Image-Edit-2511-LoRA": "PAUSED",
+    "linoyts/Qwen-Image-Edit-2511-AnyPose": "RUNNING zero-a10g",
+    "Qwen/Qwen-Image-Edit-2511": "RUNNING zero-a10g",
+    "multimodalart/Qwen-Image-Edit-Fast": "RUNNING zero-a10g",
+    "black-forest-labs/FLUX.2-dev": "RUNNING zero-a10g",
+    "multimodalart/FLUX.2-dev-turbo": "RUNNING zero-a10g"
+  },
+  "name": "probe-01",
+  "finished_at": "2026-11-18T09:34:51.876855+00:00"
+}
