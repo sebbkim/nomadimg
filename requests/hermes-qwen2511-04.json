@@ -1,0 +1,16 @@
+{
+  "space": "ovi054/Qwen-Image-Edit-2511-LoRA",
+  "api_name": "/infer",
+  "inputs": {
+    "gallery_images": [{"image": {"$file": "https://raw.githubusercontent.com/sebbkim/nomadimg/main/source/hermes.png"}, "caption": null}],
+    "prompt": "Add the text \"헤르메스 에이전트\" at the bottom center of the image, in a clean bold Korean sans-serif font. Keep the character, composition, colors and 3D style exactly unchanged.",
+    "lora_id": "",
+    "seed": 42,
+    "randomize_seed": false,
+    "true_guidance_scale": 1,
+    "num_inference_steps": 4,
+    "width": 1024,
+    "height": 1024,
+    "auto_size": true
+  }
+}
