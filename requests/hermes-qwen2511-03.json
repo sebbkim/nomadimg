@@ -1,0 +1,15 @@
+{
+  "space": "Qwen/Qwen-Image-Edit-2511",
+  "api_name": "/infer",
+  "inputs": {
+    "images": [{"image": {"$file": "https://raw.githubusercontent.com/sebbkim/nomadimg/main/source/hermes.png"}, "caption": null}],
+    "prompt": "Add the text \"헤르메스 에이전트\" at the bottom center of the image, in a clean bold Korean sans-serif font. Keep the character, composition, colors and 3D style exactly unchanged.",
+    "seed": 42,
+    "randomize_seed": false,
+    "true_guidance_scale": 4,
+    "num_inference_steps": 40,
+    "height": 1024,
+    "width": 1024,
+    "rewrite_prompt": false
+  }
+}
