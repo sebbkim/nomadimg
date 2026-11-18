@@ -1,0 +1,15 @@
+{
+  "space": "linoyts/Qwen-Image-Edit-2511-Fast",
+  "api_name": "/infer",
+  "inputs": {
+    "images": [{"$file": "https://raw.githubusercontent.com/sebbkim/nomadimg/main/source/hermes.png"}],
+    "prompt": "Add the Korean text \"헤르메스 에이전트\" at the bottom center in a clean bold Korean sans-serif font, matching the existing 3D style. Keep everything else unchanged.",
+    "seed": 42,
+    "randomize_seed": false,
+    "true_guidance_scale": 1,
+    "num_inference_steps": 4,
+    "height": 1024,
+    "width": 1024,
+    "rewrite_prompt": false
+  }
+}
