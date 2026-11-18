@@ -1,0 +1,9 @@
+{
+  "authenticated": true,
+  "space": "linoyts/Qwen-Image-Edit-2511-Fast",
+  "api_name": "/infer",
+  "status": "error",
+  "message": "AppError: RuntimeError",
+  "name": "hermes-qwen2511-01",
+  "finished_at": "2026-11-18T09:20:53.027105+00:00"
+}
