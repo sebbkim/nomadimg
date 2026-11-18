@@ -1,0 +1,9 @@
+{
+  "authenticated": true,
+  "space": "ovi054/Qwen-Image-Edit-2511-LoRA",
+  "api_name": "/infer",
+  "status": "error",
+  "message": "ValueError: ValueError('The current space is in the invalid state: PAUSED. Please contact the owner to fix this.') args=('The current space is in the invalid state: PAUSED. Please contact the owner to fix this.',) cause=None",
+  "name": "hermes-qwen2511-04",
+  "finished_at": "2026-11-18T09:31:31.392447+00:00"
+}
