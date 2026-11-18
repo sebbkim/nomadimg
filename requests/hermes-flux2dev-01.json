@@ -1,0 +1,15 @@
+{
+  "space": "black-forest-labs/FLUX.2-dev",
+  "api_name": "/infer",
+  "inputs": {
+    "prompt": "Add the text \"헤르메스 에이전트\" at the bottom center of the image, in a clean bold Korean sans-serif font. Keep the character, composition, colors and 3D style exactly the same as image 1.",
+    "input_images": [{"image": {"$file": "https://raw.githubusercontent.com/sebbkim/nomadimg/main/source/hermes.png"}, "caption": null}],
+    "seed": 42,
+    "randomize_seed": false,
+    "width": 1024,
+    "height": 1024,
+    "num_inference_steps": 30,
+    "guidance_scale": 4,
+    "prompt_upsampling": false
+  }
+}
