@@ -3,6 +3,7 @@
 
 A request that already has generated/<name>.json is skipped. To rerun, use a new name.
 On failure the endpoint schema is recorded in the meta file to help debugging.
+A request with {"probe": ["owner/space", ...]} only records each Space's runtime stage.
 """
 import base64
 import datetime
@@ -115,6 +116,23 @@ def record_endpoint(client, api_name, meta):
         meta["view_api_error"] = mask(repr(e2))[:200]
 
 
+def probe(space_ids):
+    from huggingface_hub import HfApi
+
+    api = HfApi(token=TOKEN)
+    rows = {}
+    for sid in space_ids[:30]:
+        if not isinstance(sid, str) or not SPACE_RE.match(sid):
+            rows[str(sid)[:60]] = "invalid id"
+            continue
+        try:
+            rt = api.get_space_runtime(sid)
+            rows[sid] = f"{rt.stage} {rt.hardware or ''}".strip()
+        except Exception as e:
+            rows[sid] = f"error {type(e).__name__}"
+    return rows
+
+
 def process(path):
     name = path.stem
     if not NAME_RE.match(name):
@@ -127,6 +145,12 @@ def process(path):
         if path.stat().st_size > 20000:
             raise ValueError("request too large")
         req = json.loads(path.read_text(encoding="utf-8"))
+        if "probe" in req:
+            meta.update({"status": "ok", "probe": probe(req["probe"])})
+            OUT_DIR.mkdir(exist_ok=True)
+            write_meta(name, meta)
+            print(f"[{name}] probe done")
+            return
         space = req.get("space", "")
         api_name = req.get("api_name", "")
         if not SPACE_RE.match(space) or not API_RE.match(api_name):
