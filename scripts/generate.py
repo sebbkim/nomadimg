@@ -2,6 +2,7 @@
 """Process requests/<name>.json -> generated/<name>.png and generated/<name>.json (result meta).
 
 A request that already has generated/<name>.json is skipped. To rerun, use a new name.
+On failure the endpoint schema is recorded in the meta file to help debugging.
 """
 import base64
 import datetime
@@ -104,6 +105,16 @@ def write_meta(name, meta):
     )
 
 
+def record_endpoint(client, api_name, meta):
+    try:
+        info = client.view_api(return_format="dict", print_info=False)
+        endpoints = info.get("named_endpoints", {})
+        meta["endpoints"] = list(endpoints.keys())
+        meta["endpoint"] = json.dumps(endpoints.get(api_name), ensure_ascii=False, default=str)[:1500]
+    except Exception as e2:
+        meta["view_api_error"] = mask(repr(e2))[:200]
+
+
 def process(path):
     name = path.stem
     if not NAME_RE.match(name):
@@ -125,7 +136,12 @@ def process(path):
             raise ValueError("inputs must be an object")
         meta.update({"space": space, "api_name": api_name})
         print(f"[{name}] calling {space} {api_name}")
-        result = make_client(space).predict(api_name=api_name, **inputs)
+        client = make_client(space)
+        try:
+            result = client.predict(api_name=api_name, **inputs)
+        except Exception:
+            record_endpoint(client, api_name, meta)
+            raise
         found = []
         find_images(result, found)
         meta["outputs"] = summarize(result)
@@ -136,7 +152,8 @@ def process(path):
         img.save(OUT_DIR / f"{name}.png")
         meta.update({"status": "ok", "image": f"{name}.png", "size": list(img.size)})
     except Exception as e:
-        meta.update({"status": "error", "message": mask(f"{type(e).__name__}: {e}")[:600]})
+        detail = f"{type(e).__name__}: {e!r} args={getattr(e, 'args', ())!r} cause={e.__cause__!r}"
+        meta.update({"status": "error", "message": mask(detail)[:700]})
     OUT_DIR.mkdir(exist_ok=True)
     write_meta(name, meta)
     print(f"[{name}] {meta['status']}")
