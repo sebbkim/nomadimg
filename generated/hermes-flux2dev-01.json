@@ -1,0 +1,14 @@
+{
+  "authenticated": true,
+  "space": "black-forest-labs/FLUX.2-dev",
+  "api_name": "/infer",
+  "outputs": "[\"/tmp/gradio/ae924e7599aa257c4b451259e16253bb0b9fc47e65045087f428bdd46bb1ab2a/image.webp\", 42]",
+  "status": "ok",
+  "image": "hermes-flux2dev-01.png",
+  "size": [
+    1024,
+    1024
+  ],
+  "name": "hermes-flux2dev-01",
+  "finished_at": "2026-11-18T09:36:28.427975+00:00"
+}
