@@ -1,0 +1,13 @@
+{
+  "authenticated": true,
+  "space": "Qwen/Qwen-Image-Edit-2511",
+  "api_name": "/infer",
+  "endpoints": [
+    "/infer"
+  ],
+  "endpoint": "{\"parameters\": [{\"label\": \"Input Images\", \"parameter_name\": \"images\", \"parameter_has_default\": true, \"parameter_default\": [], \"type\": {\"$defs\": {\"FileData\": {\"description\": \"The FileData class is a subclass of the GradioModel class that represents a file object within a Gradio interface. It is used to store file data and metadata when a file is uploaded.\\n\\nAttributes:\\n    path: The server file path where the file is stored.\\n    url: The normalized server URL pointing to the file.\\n    size: The size of the file in bytes.\\n    orig_name: The original filename before upload.\\n    mime_type: The MIME type of the file.\\n    is_stream: Indicates whether the file is a stream.\\n    meta: Additional metadata used internally (should not be changed).\", \"properties\": {\"path\": {\"title\": \"Path\", \"type\": \"string\"}, \"url\": {\"anyOf\": [{\"type\": \"string\"}, {\"type\": \"null\"}], \"default\": null, \"title\": \"Url\"}, \"size\": {\"anyOf\": [{\"type\": \"integer\"}, {\"type\": \"null\"}], \"default\": null, \"title\": \"Size\"}, \"orig_name\": {\"anyOf\": [{\"type\": \"string\"}, {\"type\": \"null\"}], \"default\": null, \"title\": \"Orig Name\"}, \"mime_type\": {\"anyOf\": [{\"type\": \"string\"}, {\"type\": \"null\"}], \"default\": null, \"title\": \"Mime Type\"}, \"is_stream\": {\"default\": false, \"title\": \"Is Stream\", \"type\": \"boolean\"}, \"meta\": {\"$ref\": \"#/$defs/FileDataMeta\"}}, \"required\": [\"path\"], \"title\": \"FileData\", \"type\": \"object\"}, \"FileDataMeta\": {\"properties\": {\"_type\": {\"const\": \"gradio.FileData\", \"title\": \"Type\", \"type\": \"string\"}}, \"requir",
+  "status": "error",
+  "message": "AppError: AppError('The requested GPU duration (360s) is larger than the maximum allowed') args=('The requested GPU duration (360s) is larger than the maximum allowed',) cause=None",
+  "name": "hermes-qwen2511-03",
+  "finished_at": "2026-11-18T09:24:14.135538+00:00"
+}
