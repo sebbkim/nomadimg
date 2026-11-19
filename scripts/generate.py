@@ -7,6 +7,8 @@ Request kinds:
   - {"space", "api_name", "inputs"}: call a Gradio Space (see convert() for {"$file": url}).
   - {"probe": ["owner/space", ...]}: record each Space's runtime stage.
   - {"compose": {"base": url, "text": "...", ...}}: overlay text with a real font (no GPU).
+    Optional "style": "impasto" | "ink" | "signature" blends the lettering into a painting
+    (see compose_styles.py); without a style a plain text + dark band overlay is drawn.
 Before processing, the checkout is fast-forwarded to the latest main so results saved by an
 earlier (queued) run are seen and not generated twice.
 """
@@ -178,24 +180,29 @@ def compose(spec, name):
     base = Image.open(io.BytesIO(fetch(check_url(spec["base"])))).convert("RGB")
     W, H = base.size
     font = ImageFont.truetype(io.BytesIO(fetch(FONTS[font_key])), size)
-    if position == "bottom" and spec.get("band", True):
-        band_h = int(H * 0.225)
-        grad = Image.new("L", (1, band_h))
-        for y in range(band_h):
-            grad.putpixel((0, y), int(200 * (y / band_h) ** 1.4))
-        base.paste(Image.new("RGB", (W, band_h), (14, 20, 40)), (0, H - band_h), grad.resize((W, band_h)))
-    draw = ImageDraw.Draw(base)
-    bbox = draw.textbbox((0, 0), text, font=font)
-    tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
-    x = (W - tw) // 2 - bbox[0]
-    if position == "top":
-        y = margin - bbox[1]
-    elif position == "center":
-        y = (H - th) // 2 - bbox[1]
+    if spec.get("style"):
+        import compose_styles
+
+        base = compose_styles.render(base, text, font, spec)
     else:
-        y = H - margin - th - bbox[1]
-    draw.text((x + 3, y + 3), text, font=font, fill=(0, 0, 0))
-    draw.text((x, y), text, font=font, fill=(255, 255, 255))
+        if position == "bottom" and spec.get("band", True):
+            band_h = int(H * 0.225)
+            grad = Image.new("L", (1, band_h))
+            for y in range(band_h):
+                grad.putpixel((0, y), int(200 * (y / band_h) ** 1.4))
+            base.paste(Image.new("RGB", (W, band_h), (14, 20, 40)), (0, H - band_h), grad.resize((W, band_h)))
+        draw = ImageDraw.Draw(base)
+        bbox = draw.textbbox((0, 0), text, font=font)
+        tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
+        x = (W - tw) // 2 - bbox[0]
+        if position == "top":
+            y = margin - bbox[1]
+        elif position == "center":
+            y = (H - th) // 2 - bbox[1]
+        else:
+            y = H - margin - th - bbox[1]
+        draw.text((x + 3, y + 3), text, font=font, fill=(0, 0, 0))
+        draw.text((x, y), text, font=font, fill=(255, 255, 255))
     OUT_DIR.mkdir(exist_ok=True)
     base.save(OUT_DIR / f"{name}.png")
     base.save(OUT_DIR / f"{name}.jpg", quality=92)
