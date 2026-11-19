@@ -3,7 +3,10 @@
 
 A request that already has generated/<name>.json is skipped. To rerun, use a new name.
 On failure the endpoint schema is recorded in the meta file to help debugging.
-A request with {"probe": ["owner/space", ...]} only records each Space's runtime stage.
+Request kinds:
+  - {"space", "api_name", "inputs"}: call a Gradio Space (see convert() for {"$file": url}).
+  - {"probe": ["owner/space", ...]}: record each Space's runtime stage.
+  - {"compose": {"base": url, "text": "...", ...}}: overlay text with a real font (no GPU).
 Before processing, the checkout is fast-forwarded to the latest main so results saved by an
 earlier (queued) run are seen and not generated twice.
 """
@@ -15,6 +18,7 @@ import os
 import pathlib
 import re
 import subprocess
+import urllib.request
 
 from gradio_client import Client, handle_file
 from PIL import Image
@@ -28,6 +32,9 @@ ALLOWED_PREFIXES = (
     "https://raw.githubusercontent.com/sebbkim/nomadimg/",
     "https://cdn.jsdelivr.net/gh/sebbkim/nomadimg@",
 )
+FONTS = {
+    "pretendard-bold": "https://raw.githubusercontent.com/orioncactus/pretendard/main/packages/pretendard/dist/public/static/Pretendard-Bold.otf",
+}
 IMG_EXT = (".png", ".jpg", ".jpeg", ".webp")
 TOKEN = os.environ.get("HF_TOKEN", "").strip() or None
 
@@ -146,6 +153,55 @@ def probe(space_ids):
     return rows
 
 
+def fetch(url, limit=30_000_000):
+    req = urllib.request.Request(url, headers={"User-Agent": "nomadimg-compose"})
+    with urllib.request.urlopen(req, timeout=60) as resp:
+        data = resp.read(limit + 1)
+    if len(data) > limit:
+        raise ValueError("file too large")
+    return data
+
+
+def compose(spec, name):
+    """Overlay text on a base image using a real font. Writes <name>.png and <name>.jpg."""
+    from PIL import ImageDraw, ImageFont
+
+    text = str(spec.get("text", ""))[:200]
+    if not text:
+        raise ValueError("text is required")
+    font_key = spec.get("font", "pretendard-bold")
+    if font_key not in FONTS:
+        raise ValueError("unknown font")
+    size = int(spec.get("size", 88))
+    margin = int(spec.get("margin", 70))
+    position = spec.get("position", "bottom")
+    base = Image.open(io.BytesIO(fetch(check_url(spec["base"])))).convert("RGB")
+    W, H = base.size
+    font = ImageFont.truetype(io.BytesIO(fetch(FONTS[font_key])), size)
+    if position == "bottom" and spec.get("band", True):
+        band_h = int(H * 0.225)
+        grad = Image.new("L", (1, band_h))
+        for y in range(band_h):
+            grad.putpixel((0, y), int(200 * (y / band_h) ** 1.4))
+        base.paste(Image.new("RGB", (W, band_h), (14, 20, 40)), (0, H - band_h), grad.resize((W, band_h)))
+    draw = ImageDraw.Draw(base)
+    bbox = draw.textbbox((0, 0), text, font=font)
+    tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
+    x = (W - tw) // 2 - bbox[0]
+    if position == "top":
+        y = margin - bbox[1]
+    elif position == "center":
+        y = (H - th) // 2 - bbox[1]
+    else:
+        y = H - margin - th - bbox[1]
+    draw.text((x + 3, y + 3), text, font=font, fill=(0, 0, 0))
+    draw.text((x, y), text, font=font, fill=(255, 255, 255))
+    OUT_DIR.mkdir(exist_ok=True)
+    base.save(OUT_DIR / f"{name}.png")
+    base.save(OUT_DIR / f"{name}.jpg", quality=92)
+    return {"image": f"{name}.png", "jpg": f"{name}.jpg", "size": [W, H]}
+
+
 def process(path):
     name = path.stem
     if not NAME_RE.match(name):
@@ -163,6 +219,11 @@ def process(path):
             OUT_DIR.mkdir(exist_ok=True)
             write_meta(name, meta)
             print(f"[{name}] probe done")
+            return
+        if "compose" in req:
+            meta.update({"status": "ok", **compose(req["compose"], name)})
+            write_meta(name, meta)
+            print(f"[{name}] compose done")
             return
         space = req.get("space", "")
         api_name = req.get("api_name", "")
