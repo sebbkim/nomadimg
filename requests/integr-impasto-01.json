@@ -1,0 +1,10 @@
+{
+  "compose": {
+    "base": "https://raw.githubusercontent.com/sebbkim/nomadimg/main/generated/edit-flux2dev-oilpaint-01.png",
+    "text": "헤르메스 에이전트",
+    "style": "impasto",
+    "size": 84,
+    "position": "bottom",
+    "margin": 70
+  }
+}
