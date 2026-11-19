@@ -1,0 +1,14 @@
+{
+  "authenticated": true,
+  "space": "black-forest-labs/FLUX.2-dev",
+  "api_name": "/infer",
+  "endpoints": [
+    "/update_dimensions_from_image",
+    "/infer"
+  ],
+  "endpoint": "{\"parameters\": [{\"label\": \"Prompt\", \"parameter_name\": \"prompt\", \"parameter_has_default\": false, \"parameter_default\": null, \"type\": {\"type\": \"string\"}, \"python_type\": {\"type\": \"str\", \"description\": \"\"}, \"component\": \"Textbox\", \"example_input\": \"Hello!!\"}, {\"label\": \"Input Image(s)\", \"parameter_name\": \"input_images\", \"parameter_has_default\": true, \"parameter_default\": [], \"type\": {\"$defs\": {\"FileData\": {\"description\": \"The FileData class is a subclass of the GradioModel class that represents a file object within a Gradio interface. It is used to store file data and metadata when a file is uploaded.\\n\\nAttributes:\\n    path: The server file path where the file is stored.\\n    url: The normalized server URL pointing to the file.\\n    size: The size of the file in bytes.\\n    orig_name: The original filename before upload.\\n    mime_type: The MIME type of the file.\\n    is_stream: Indicates whether the file is a stream.\\n    meta: Additional metadata used internally (should not be changed).\", \"properties\": {\"path\": {\"title\": \"Path\", \"type\": \"string\"}, \"url\": {\"anyOf\": [{\"type\": \"string\"}, {\"type\": \"null\"}], \"default\": null, \"title\": \"Url\"}, \"size\": {\"anyOf\": [{\"type\": \"integer\"}, {\"type\": \"null\"}], \"default\": null, \"title\": \"Size\"}, \"orig_name\": {\"anyOf\": [{\"type\": \"string\"}, {\"type\": \"null\"}], \"default\": null, \"title\": \"Orig Name\"}, \"mime_type\": {\"anyOf\": [{\"type\": \"string\"}, {\"type\": \"null\"}], \"default\": null, \"title\": \"Mime Type\"}, \"is_stream\": {\"default\": false, \"title\": \"Is S",
+  "status": "error",
+  "message": "AppError: AppError('You have exceeded your free ZeroGPU quota (150s requested vs. 51s left). Try again in 23:30:23. Subscribe to Hugging Face PRO to get 40 min of ZeroGPU quota a day - https://huggingface.co/subscribe/pro?from=ZeroGPU') args=('You have exceeded your free ZeroGPU quota (150s requested vs. 51s left). Try again in 23:30:23. Subscribe to Hugging Face PRO to get 40 min of ZeroGPU quota a day - https://huggingface.co/subscribe/pro?from=ZeroGPU',) cause=None",
+  "name": "edit-flux2dev-removetext-01",
+  "finished_at": "2026-11-19T04:28:29.167048+00:00"
+}
