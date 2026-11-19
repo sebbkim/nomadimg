@@ -2,7 +2,7 @@
   "space": "black-forest-labs/FLUX.2-dev",
   "api_name": "/infer",
   "inputs": {
-    "prompt": "Remove the Korean text at the bottom center of image 1. Fill that area naturally with the surrounding painted background and clothing, matching the brushstrokes and colors. Keep everything else exactly unchanged.",
+    "prompt": "Remove the Korean text at the bottom center of image 1. Fill that area naturally with the surrounding painted background and clothing, matching the brushstrokes and colors. Leave no ghost traces of the letters. Keep everything else exactly unchanged.",
     "input_images": [{"image": {"$file": "https://raw.githubusercontent.com/sebbkim/nomadimg/main/generated/hermes-ideogram4-01.png"}, "caption": null}],
     "seed": 42,
     "randomize_seed": false,
