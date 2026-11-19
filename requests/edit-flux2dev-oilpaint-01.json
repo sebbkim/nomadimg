@@ -1,0 +1,15 @@
+{
+  "space": "black-forest-labs/FLUX.2-dev",
+  "api_name": "/infer",
+  "inputs": {
+    "prompt": "Repaint image 1 as a classical oil painting with thick visible impasto brushstrokes and canvas texture. Keep the exact same composition, three-quarter profile pose, face, bob haircut with blunt bangs, white headband and striped top. Use natural oil paint colors: deep blue-black hair with soft highlights, warm skin tones, warm cream background. Do not add any text.",
+    "input_images": [{"image": {"$file": "https://raw.githubusercontent.com/sebbkim/nomadimg/main/source/hermes.png"}, "caption": null}],
+    "seed": 42,
+    "randomize_seed": false,
+    "width": 1024,
+    "height": 1024,
+    "num_inference_steps": 30,
+    "guidance_scale": 4,
+    "prompt_upsampling": false
+  }
+}
