@@ -1,0 +1,12 @@
+{
+  "authenticated": true,
+  "status": "ok",
+  "image": "compose-oilpaint-01.png",
+  "jpg": "compose-oilpaint-01.jpg",
+  "size": [
+    1024,
+    1024
+  ],
+  "name": "compose-oilpaint-01",
+  "finished_at": "2026-11-19T08:52:52.667072+00:00"
+}
