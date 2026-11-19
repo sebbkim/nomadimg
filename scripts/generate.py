@@ -4,6 +4,8 @@
 A request that already has generated/<name>.json is skipped. To rerun, use a new name.
 On failure the endpoint schema is recorded in the meta file to help debugging.
 A request with {"probe": ["owner/space", ...]} only records each Space's runtime stage.
+Before processing, the checkout is fast-forwarded to the latest main so results saved by an
+earlier (queued) run are seen and not generated twice.
 """
 import base64
 import datetime
@@ -12,6 +14,7 @@ import json
 import os
 import pathlib
 import re
+import subprocess
 
 from gradio_client import Client, handle_file
 from PIL import Image
@@ -27,6 +30,16 @@ ALLOWED_PREFIXES = (
 )
 IMG_EXT = (".png", ".jpg", ".jpeg", ".webp")
 TOKEN = os.environ.get("HF_TOKEN", "").strip() or None
+
+
+def sync_latest():
+    """Fast-forward the working tree to the latest origin/main (no-op if already current)."""
+    try:
+        subprocess.run(["git", "fetch", "origin", "main"], check=True, timeout=120)
+        subprocess.run(["git", "merge", "--ff-only", "FETCH_HEAD"], check=True, timeout=120)
+        print("synced to latest main")
+    except Exception as e:
+        print(f"sync skipped: {type(e).__name__}")
 
 
 def check_url(u):
@@ -184,5 +197,6 @@ def process(path):
 
 
 if __name__ == "__main__":
+    sync_latest()
     for p in sorted(REQ_DIR.glob("*.json")):
         process(p)
