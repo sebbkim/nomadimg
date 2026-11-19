@@ -1,0 +1,14 @@
+{
+  "authenticated": true,
+  "space": "black-forest-labs/FLUX.2-dev",
+  "api_name": "/infer",
+  "outputs": "[\"/tmp/gradio/27b85709726183bc2e04861639851c7da11fb375087f9d9d71f94120cc6bc9c1/image.webp\", 42]",
+  "status": "ok",
+  "image": "edit-flux2dev-oilpaint-01.png",
+  "size": [
+    1024,
+    1024
+  ],
+  "name": "edit-flux2dev-oilpaint-01",
+  "finished_at": "2026-11-19T04:06:13.539257+00:00"
+}
