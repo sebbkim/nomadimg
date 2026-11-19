@@ -1,0 +1,13 @@
+{
+  "space": "ideogram-ai/ideogram4",
+  "api_name": "/generate",
+  "inputs": {
+    "prompt": "A square portrait illustration of a young girl in three-quarter profile, facing left, with a glossy straight black bob haircut with blunt bangs and a white headband, large dark eyes with long lashes, small parted lips, a sleeveless top with white stripes visible at the bottom right, shoulder cropped at the bottom edge. Painted as a classical oil painting with thick visible impasto brushstrokes and canvas texture, rich deep blue-black hair with soft highlights, warm cream-colored background. At the bottom center, the Korean text \"헤르메스 에이전트\" in a clean bold Korean sans-serif font, clearly legible.",
+    "mode": "Default · 20 steps",
+    "upsampler": "Ideogram (remote)",
+    "width": 1024,
+    "height": 1024,
+    "seed": 42,
+    "randomize_seed": false
+  }
+}
