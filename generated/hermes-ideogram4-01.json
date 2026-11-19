@@ -1,0 +1,14 @@
+{
+  "authenticated": true,
+  "space": "ideogram-ai/ideogram4",
+  "api_name": "/generate",
+  "outputs": "[\"/tmp/gradio/44c5bc61d2f54aabbad2df8b3fd9006d6cd3072d4a22564ad55c0130c44147b5/image.webp\", 42, {\"compositional_deconstruction\": {\"background\": \"Warm cream-colored painted ground filling the entire frame, with subtle tonal variation and faint visible brushwork texture. Canvas weave shows through thinner passages. Soft chiaroscuro lighting from\", \"elements\": [{\"desc\": \"Young girl in three-quarter profile facing left, head and upper shoulders filling most of the frame, anchored slightly right of center. Glossy straight black bob haircut in deep blue-black with blunt \", \"type\": \"obj\"}, {\"desc\": \"Medium-sized text across the bottom center of the canvas, clean bold Korean sans-serif in dark ink, horizontal and centered, treated as a flat typographic element printed or inscribed against the crea",
+  "status": "ok",
+  "image": "hermes-ideogram4-01.png",
+  "size": [
+    1024,
+    1024
+  ],
+  "name": "hermes-ideogram4-01",
+  "finished_at": "2026-11-19T03:59:16.148613+00:00"
+}
