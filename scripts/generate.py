@@ -7,13 +7,15 @@ Request kinds:
   - {"space", "api_name", "inputs"}: call a Gradio Space (see convert() for {"$file": url}).
   - {"probe": ["owner/space", ...]}: record each Space's runtime stage.
   - {"compose": {"base": url, "text": "...", ...}}: overlay text with a real font (no GPU).
-    Optional "style": "impasto" | "ink" | "signature" blends the lettering into a painting
-    (see compose_styles.py); without a style a plain text + dark band overlay is drawn.
+    Optional "style": "impasto" | "ink" | "signature" (see compose_styles.py).
+  - {"<kind>": {...}}: any request key with a matching scripts/mode_<kind>.py module, whose
+    run(spec, name, out_dir) returns a dict merged into the meta (e.g. mode_openrouter.py).
 Before processing, the checkout is fast-forwarded to the latest main so results saved by an
 earlier (queued) run are seen and not generated twice.
 """
 import base64
 import datetime
+import importlib
 import io
 import json
 import os
@@ -117,7 +119,10 @@ def make_client(space):
 
 def mask(text):
     text = str(text)
-    return text.replace(TOKEN, "***") if TOKEN else text
+    for secret in (TOKEN, os.environ.get("OPENROUTER_API_KEY", "").strip()):
+        if secret:
+            text = text.replace(secret, "***")
+    return text
 
 
 def write_meta(name, meta):
@@ -232,6 +237,14 @@ def process(path):
             write_meta(name, meta)
             print(f"[{name}] compose done")
             return
+        for kind in req:
+            if re.fullmatch(r"[a-z_]{1,20}", kind) and (pathlib.Path(__file__).parent / f"mode_{kind}.py").exists():
+                mod = importlib.import_module(f"mode_{kind}")
+                OUT_DIR.mkdir(exist_ok=True)
+                meta.update({"status": "ok", **mod.run(req[kind], name, OUT_DIR)})
+                write_meta(name, meta)
+                print(f"[{name}] {kind} done")
+                return
         space = req.get("space", "")
         api_name = req.get("api_name", "")
         if not SPACE_RE.match(space) or not API_RE.match(api_name):
